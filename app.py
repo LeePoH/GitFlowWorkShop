@@ -43,4 +43,13 @@ def country():
             results.append(elem)
     return jsonify(results)
 
+@app.route('/robbery/all', methods=['GET'])
+def robbery_all():
+    return 
+
+
+@app.route('/robbery', methods=['GET'])
+def robbery_loction():
+    return
+
 app.run()
