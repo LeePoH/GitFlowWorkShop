@@ -62,9 +62,19 @@ def country():
 def robbery_all():
     return jsonify(robbery_list)
 
-
 @app.route('/robbery', methods=['GET'])
-def robbery_loction():
-    return
+def robbery_query():
+    date = ''
+    if 'date' in request.args:
+        date = request.args['date']
+    results = []
+
+    for elem in robbery_list:
+        if date in str(elem['date']):
+            results.append(elem)
+
+    if results == []:
+        return "No search result, and please input date format as 10901."
+    return jsonify(results)
 
 app.run()
