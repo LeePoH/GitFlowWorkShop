@@ -21,6 +21,21 @@ for i in range(nrows):
             row_dict[idx] = float(val)
     gapminder_list.append(row_dict)
     
+robbery = pd.read_csv("Taipei_Home_Robbery_10401_10907.csv")
+robbery_list = []
+nrows = robbery.shape[0]
+for i in range(nrows):
+    ser = robbery.loc[i, :]
+    row_dict = {}
+    for idx, val in zip(ser.index, ser.values):
+        if type(val) is str:
+            row_dict[idx] = val
+        elif type(val) is np.int64:
+            row_dict[idx] = int(val)
+        elif type(val) is np.float64:
+            row_dict[idx] = float(val)
+    robbery_list.append(row_dict)
+
 @app.route('/', methods=['GET'])
 def home():
     return "<h1>Git Flow Workshop!</h1>"
