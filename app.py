@@ -60,7 +60,7 @@ def country():
 
 @app.route('/robbery/all', methods=['GET'])
 def robbery_all():
-    return 
+    return jsonify(robbery_list)
 
 
 @app.route('/robbery', methods=['GET'])
