@@ -5,6 +5,7 @@ import pandas as pd
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+app.config["JSON_AS_ASCII"] = False
 
 gapminder = pd.read_csv("gapminder.csv")
 gapminder_list = []
@@ -20,6 +21,21 @@ for i in range(nrows):
         elif type(val) is np.float64:
             row_dict[idx] = float(val)
     gapminder_list.append(row_dict)
+    
+robbery = pd.read_csv("Taipei_Home_Robbery_10401_10907.csv")
+robbery_list = []
+nrows = robbery.shape[0]
+for i in range(nrows):
+    ser = robbery.loc[i, :]
+    row_dict = {}
+    for idx, val in zip(ser.index, ser.values):
+        if type(val) is str:
+            row_dict[idx] = val
+        elif type(val) is np.int64:
+            row_dict[idx] = int(val)
+        elif type(val) is np.float64:
+            row_dict[idx] = float(val)
+    robbery_list.append(row_dict)
     
 @app.route('/', methods=['GET'])
 def home():
@@ -45,11 +61,20 @@ def country():
 
 @app.route('/robbery/all', methods=['GET'])
 def robbery_all():
-    return 
+    return jsonify(robbery_list)
 
 
 @app.route('/robbery', methods=['GET'])
 def robbery_loction():
-    return
+    if 'location' in request.args:
+        location = request.args['location']
+    else:
+        return "Error: No location provided. Please specify a location."
+    results = []
+
+    for elem in robbery_list:
+        if location in elem['location']:
+            results.append(elem)
+    return jsonify(results)
 
 app.run()
