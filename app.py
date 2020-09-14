@@ -5,6 +5,7 @@ import pandas as pd
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+app.config["JSON_AS_ASCII"] = False
 
 gapminder = pd.read_csv("gapminder.csv")
 gapminder_list = []
@@ -65,16 +66,21 @@ def robbery_all():
 @app.route('/robbery', methods=['GET'])
 def robbery_query():
     date = ''
+    location = ''
     if 'date' in request.args:
         date = request.args['date']
+
+    if 'location' in request.args:
+        location = request.args['location']
+        
     results = []
 
     for elem in robbery_list:
-        if date in str(elem['date']):
+        if date in str(elem['date']) and location in elem['location']:
             results.append(elem)
 
     if results == []:
-        return "No search result, and please input date format as 10901."
+        return "No search result, and please input date format as 10901 or specify a location."
     return jsonify(results)
 
 app.run()
