@@ -79,7 +79,7 @@ def robbery_query():
         if date in str(elem['date']) and location in elem['location']:
             results.append(elem)
 
-    if results == []:
+    if results == [] or date == location == '':
         return "No search result, and please input date format as 10901 or specify a location."
     return jsonify(results)
 
